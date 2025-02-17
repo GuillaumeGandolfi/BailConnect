@@ -1,38 +1,41 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { supabase } from "./lib/supabaseClient";
+import { supabase } from "../lib/supabaseClient";
+import AdCard from "../components/AdCard";
 
 export default function HomePage() {
-  const [annonces, setAnnonces] = useState([]);
+  const [ads, setAds] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchAnnonces() {
+    async function fetchAds() {
       const { data, error } = await supabase.from("annonces").select("*");
       if (error) {
-        console.error("Erreur de récupération:", error);
+        setError(error);
       } else {
-        console.log("Données récupérées:", data);
-        setAnnonces(data);
+        setAds(data);
       }
+      setLoading(false);
     }
-    fetchAnnonces();
+    fetchAds();
   }, []);
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold">Hello, BailConnect!</h1>
-      <ul>
-        {annonces.length > 0 ? (
-          annonces.map((annonce) => (
-            <li key={annonce.id}>
-              <h2>{annonce.titre}</h2>
-              <p>{annonce.description}</p>
-            </li>
-          ))
-        ) : (
-          <p>Aucune annonce trouvée.</p>
-        )}
-      </ul>
+      {loading ? (
+        <p>Chargement...</p>
+      ) : error ? (
+        <p>Erreur : {error.message}</p>
+      ) : ads.length === 0 ? (
+        <p>Aucune annonce trouvée.</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {ads.map((ad) => (
+            <AdCard key={ad.id} ad={ad} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
