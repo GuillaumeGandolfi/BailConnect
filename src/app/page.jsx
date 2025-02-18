@@ -10,39 +10,72 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   const fetchAds = async () => {
     setLoading(true);
-    let query = supabase.from("annonces").select("*");
+    let query;
 
-    if (filters.localisation) {
-      query = query.ilike("localisation", `%${filters.localisation}%`);
-    }
-    if (filters.minLoyer) {
-      query = query.gte("loyer", parseFloat(filters.minLoyer));
-    }
-    if (filters.maxLoyer) {
-      query = query.lte("loyer", parseFloat(filters.maxLoyer));
-    }
-    if (filters.startDate) {
-      query = query.gte("date_de_liberation", filters.startDate);
-    }
-    if (filters.endDate) {
-      query = query.lte("date_de_liberation", filters.endDate);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      setError(error);
+    if (searchTerm) {
+      // Appel de la fonction RPC (pour la recherche dans accent par exemple)
+      const { data, error } = await supabase.rpc("search_ads", {
+        search_text: searchTerm,
+      });
+      if (error) {
+        setError(error);
+        query = [];
+      } else {
+        query = data;
+      }
     } else {
-      setAds(data);
+      const { data, error } = await supabase.from("annonces").select("*");
+      if (error) {
+        setError(error);
+        query = [];
+      } else {
+        query = data;
+      }
+    }
+
+    // Application des filtres avancés côté client
+    if (query) {
+      let filteredAds = query;
+      if (filters.localisation) {
+        filteredAds = filteredAds.filter((ad) =>
+          ad.localisation
+            .toLowerCase()
+            .includes(filters.localisation.toLowerCase())
+        );
+      }
+      if (filters.minLoyer) {
+        filteredAds = filteredAds.filter(
+          (ad) => parseFloat(ad.loyer) >= parseFloat(filters.minLoyer)
+        );
+      }
+      if (filters.maxLoyer) {
+        filteredAds = filteredAds.filter(
+          (ad) => parseFloat(ad.loyer) <= parseFloat(filters.maxLoyer)
+        );
+      }
+      if (filters.startDate) {
+        filteredAds = filteredAds.filter(
+          (ad) => new Date(ad.date_de_liberation) >= new Date(filters.startDate)
+        );
+      }
+      if (filters.endDate) {
+        filteredAds = filteredAds.filter(
+          (ad) => new Date(ad.date_de_liberation) <= new Date(filters.endDate)
+        );
+      }
+      setAds(filteredAds);
     }
     setLoading(false);
   };
 
   useEffect(() => {
     fetchAds();
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   return (
     <div className="p-4">
@@ -56,7 +89,33 @@ export default function HomePage() {
         </Link>
       </div>
 
-      <Filters onFilterChange={(newFilters) => setFilters(newFilters)} />
+      {/* Barre de recherche */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Rechercher..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Bouton pour afficher/masquer les filtres avancés */}
+      <div className="mb-6">
+        <button
+          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+          className="text-blue-500 hover:underline"
+        >
+          {showAdvancedFilters
+            ? "Masquer les filtres avancés"
+            : "Afficher les filtres avancés"}
+        </button>
+        {showAdvancedFilters && (
+          <div className="mt-4">
+            <Filters onFilterChange={(newFilters) => setFilters(newFilters)} />
+          </div>
+        )}
+      </div>
 
       {loading ? (
         <p>Chargement...</p>
