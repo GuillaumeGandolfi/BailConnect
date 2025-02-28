@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { supabase } from "../lib/supabaseClient";
 import HeroSection from "../components/HeroSection";
+import ProcessSection from "../components/ProcessSection";
 import AdCard from "../components/AdCard";
 import Filters from "../components/Filters";
 import Link from "next/link";
@@ -89,6 +90,8 @@ export default function HomePage() {
       </Head>
 
       <HeroSection />
+
+      <ProcessSection />
 
       <div className="p-4">
         <div className="mb-6 flex items-center justify-between">

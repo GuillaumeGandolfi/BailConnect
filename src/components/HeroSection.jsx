@@ -14,23 +14,24 @@ export default function HeroSection() {
 
       <div className="relative container mx-auto px-4 text-center">
         <motion.h1
-          className="text-5xl font-bold text-white mb-4"
+          className="text-6xl font-bold text-white mb-6"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
         >
-          Simplifiez votre cession et reprise de bail
+          Cession et reprise de bail, simplifiées pour vous
         </motion.h1>
         <motion.p
-          className="text-xl text-white mb-8"
+          className="text-xl text-white mb-8 max-w-2xl mx-auto leading-relaxed"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.7 }}
         >
-          Trouvez rapidement des partenaires fiables et facilitez vos démarches
-          immobilières. Que vous souhaitiez céder ou reprendre un bail, notre
-          plateforme vous offre une solution simple et efficace pour concrétiser
-          vos projets.
+          Marre de perdre du temps à chercher parmi des annonces dispersées ?
+          Notre plateforme centralise toutes les offres et vous connecte en un
+          clin d'œil avec des partenaires de confiance. Profitez d'une solution
+          claire, rapide et sécurisée pour une cession ou reprise de bail
+          réussie.
         </motion.p>
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
