@@ -9,18 +9,18 @@ import { supabase } from "../lib/supabaseClient";
 const schema = Yup.object().shape({
   titre: Yup.string()
     .max(100, "Le titre ne peut dépasser 100 caractères")
-    .required("Le titre est requis"),
-  description: Yup.string().required("La description est requise"),
+    .required("Veuillez renseigner un titre"),
+  description: Yup.string().required("La description est obligatoire"),
   date_de_liberation: Yup.date().required("La date de libération est requise"),
   loyer: Yup.number()
     .positive("Le loyer doit être positif")
-    .required("Le loyer est requis"),
+    .required("Veuillez renseigner le montant du loyer"),
   localisation: Yup.string()
     .max(100, "La localisation ne peut dépasser 100 caractères")
     .required("La localisation est requise"),
   contact: Yup.string()
-    .max(100, "Le contact ne peut dépasser 100 caractères")
-    .required("Le contact est requis"),
+    .max(100, "Les coordonnées ne peuvent dépasser 100 caractères")
+    .required("Les coordonnées sont obligatoires"),
 });
 
 export default function AdCreationForm({ onSuccess }) {
@@ -40,7 +40,6 @@ export default function AdCreationForm({ onSuccess }) {
     } else {
       console.log("Annonce insérée avec succès !");
       reset();
-      // Rafraîchir la liste des annonces dans la page d'accueil
       if (onSuccess) onSuccess();
     }
   };
@@ -51,11 +50,12 @@ export default function AdCreationForm({ onSuccess }) {
       className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md"
     >
       <div className="mb-4">
-        <label className="block text-gray-700 mb-1">Titre</label>
+        <label className="block text-gray-700 mb-1">Titre de l'annonce</label>
         <input
           type="text"
           {...register("titre")}
           className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Ex : Cession de bail Montréal - Quartier le plateau"
         />
         {errors.titre && (
           <p className="text-red-500 text-sm mt-1">{errors.titre.message}</p>
@@ -63,10 +63,13 @@ export default function AdCreationForm({ onSuccess }) {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 mb-1">Description</label>
+        <label className="block text-gray-700 mb-1">
+          Description détaillée
+        </label>
         <textarea
           {...register("description")}
           className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Décrivez votre situation et les atouts de votre offre..."
         />
         {errors.description && (
           <p className="text-red-500 text-sm mt-1">
@@ -90,11 +93,12 @@ export default function AdCreationForm({ onSuccess }) {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 mb-1">Loyer</label>
+        <label className="block text-gray-700 mb-1">Loyer mensuel</label>
         <input
           type="number"
           {...register("loyer")}
           className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Ex : 1200"
         />
         {errors.loyer && (
           <p className="text-red-500 text-sm mt-1">{errors.loyer.message}</p>
@@ -107,6 +111,7 @@ export default function AdCreationForm({ onSuccess }) {
           type="text"
           {...register("localisation")}
           className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Ex : H1W 0A1 - Montréal"
         />
         {errors.localisation && (
           <p className="text-red-500 text-sm mt-1">
@@ -116,11 +121,14 @@ export default function AdCreationForm({ onSuccess }) {
       </div>
 
       <div className="mb-6">
-        <label className="block text-gray-700 mb-1">Contact</label>
+        <label className="block text-gray-700 mb-1">
+          Coordonnées de contact
+        </label>
         <input
           type="text"
           {...register("contact")}
           className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Email, téléphone, etc."
         />
         {errors.contact && (
           <p className="text-red-500 text-sm mt-1">{errors.contact.message}</p>
@@ -132,7 +140,7 @@ export default function AdCreationForm({ onSuccess }) {
         disabled={isSubmitting}
         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
       >
-        {isSubmitting ? "Envoi en cours..." : "Créer l'annonce"}
+        {isSubmitting ? "Envoi en cours..." : "Valider et publier l'annonce"}
       </button>
     </form>
   );
