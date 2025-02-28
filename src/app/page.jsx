@@ -4,6 +4,7 @@ import Head from "next/head";
 import { supabase } from "../lib/supabaseClient";
 import HeroSection from "../components/HeroSection";
 import ProcessSection from "../components/ProcessSection";
+import FaqSection from "../components/FAQSection";
 import AdCard from "../components/AdCard";
 import Filters from "../components/Filters";
 import Link from "next/link";
@@ -92,6 +93,8 @@ export default function HomePage() {
       <HeroSection />
 
       <ProcessSection />
+
+      <FaqSection />
 
       <div className="p-4">
         <div className="mb-6 flex items-center justify-between">

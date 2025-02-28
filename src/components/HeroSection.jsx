@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
-    <section className="relative bg-grey-light py-20 overflow-hidden">
+    <section className="relative bg-blue-deep py-20 overflow-hidden">
       <motion.div
         className="absolute inset-0 bg-blue-deep"
         initial={{ opacity: 0 }}
