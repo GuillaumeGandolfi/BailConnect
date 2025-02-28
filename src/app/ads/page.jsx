@@ -1,10 +1,10 @@
-// ads.jsx
 "use client";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import AdCard from "../../components/AdCard";
 import Filters from "../../components/Filters";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function AdsPage() {
   const [ads, setAds] = useState([]);
@@ -78,13 +78,33 @@ export default function AdsPage() {
 
   return (
     <div className="p-4">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Annonces</h1>
+      {/* En-tête de la page */}
+      <div className="mb-8 text-center">
+        <motion.h1
+          className="text-4xl font-bold text-blue-deep"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Découvrez toutes les annonces
+        </motion.h1>
+        <motion.p
+          className="text-lg text-gray-700 mt-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          Trouvez l'offre idéale pour votre cession ou reprise de bail.
+        </motion.p>
+      </div>
+
+      {/* Bouton pour créer une annonce */}
+      <div className="mb-6 flex items-center justify-center">
         <Link
           href="/create"
           className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
         >
-          Créer une annonce
+          Publier une annonce
         </Link>
       </div>
 
@@ -92,15 +112,15 @@ export default function AdsPage() {
       <div className="mb-6">
         <input
           type="text"
-          placeholder="Rechercher..."
+          placeholder="Rechercher par titre, localisation..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {/* Bouton pour afficher/masquer les filtres avancés */}
-      <div className="mb-6">
+      <div className="mb-6 text-center">
         <button
           onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
           className="text-blue-500 hover:underline"
@@ -109,21 +129,22 @@ export default function AdsPage() {
             ? "Masquer les filtres avancés"
             : "Afficher les filtres avancés"}
         </button>
-        {showAdvancedFilters && (
-          <div className="mt-4">
-            <Filters onFilterChange={(newFilters) => setFilters(newFilters)} />
-          </div>
-        )}
       </div>
+      {showAdvancedFilters && (
+        <div className="mb-6">
+          <Filters onFilterChange={(newFilters) => setFilters(newFilters)} />
+        </div>
+      )}
 
+      {/* Affichage des annonces */}
       {loading ? (
-        <p>Chargement...</p>
+        <p className="text-center">Chargement...</p>
       ) : error ? (
-        <p>Erreur : {error.message}</p>
+        <p className="text-center text-red-500">Erreur : {error.message}</p>
       ) : ads.length === 0 ? (
-        <p>Aucune annonce trouvée.</p>
+        <p className="text-center">Aucune annonce trouvée.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {ads.map((ad) => (
             <AdCard key={ad.id} ad={ad} />
           ))}

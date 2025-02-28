@@ -20,7 +20,7 @@ export default function FAQSection() {
       question:
         "Quels moyens de communication sont disponibles pour entrer en contact ?",
       answer:
-        "Vous pouvez directement joindre les annonceurs via téléphone, email ou messagerie. De plus, un chat intégré est en cours de développement pour faciliter encore plus vos échanges.",
+        "Vous pouvez directement joindre les annonceurs via leur moyen de contact indiqué (mobile, email, facebook) De plus, un chat intégré est en cours de développement pour faciliter encore plus vos échanges.",
     },
   ];
 
