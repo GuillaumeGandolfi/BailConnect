@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Head from "next/head";
 import { supabase } from "../lib/supabaseClient";
+import HeroSection from "../components/HeroSection";
 import AdCard from "../components/AdCard";
 import Filters from "../components/Filters";
 import Link from "next/link";
@@ -78,58 +80,71 @@ export default function HomePage() {
   }, [filters, searchTerm]);
 
   return (
-    <div className="p-4">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Annonces</h1>
-        <Link
-          href="/create"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
-        >
-          Créer une annonce
-        </Link>
-      </div>
-
-      {/* Barre de recherche */}
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Rechercher..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+    <>
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500;700&display=swap"
+          rel="stylesheet"
         />
-      </div>
+      </Head>
 
-      {/* Bouton pour afficher/masquer les filtres avancés */}
-      <div className="mb-6">
-        <button
-          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-          className="text-blue-500 hover:underline"
-        >
-          {showAdvancedFilters
-            ? "Masquer les filtres avancés"
-            : "Afficher les filtres avancés"}
-        </button>
-        {showAdvancedFilters && (
-          <div className="mt-4">
-            <Filters onFilterChange={(newFilters) => setFilters(newFilters)} />
+      <HeroSection />
+
+      <div className="p-4">
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Annonces</h1>
+          <Link
+            href="/create"
+            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
+          >
+            Créer une annonce
+          </Link>
+        </div>
+
+        {/* Barre de recherche */}
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="Rechercher..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        {/* Bouton pour afficher/masquer les filtres avancés */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+            className="text-blue-500 hover:underline"
+          >
+            {showAdvancedFilters
+              ? "Masquer les filtres avancés"
+              : "Afficher les filtres avancés"}
+          </button>
+          {showAdvancedFilters && (
+            <div className="mt-4">
+              <Filters
+                onFilterChange={(newFilters) => setFilters(newFilters)}
+              />
+            </div>
+          )}
+        </div>
+
+        {loading ? (
+          <p>Chargement...</p>
+        ) : error ? (
+          <p>Erreur : {error.message}</p>
+        ) : ads.length === 0 ? (
+          <p>Aucune annonce trouvée.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {ads.map((ad) => (
+              <AdCard key={ad.id} ad={ad} />
+            ))}
           </div>
         )}
       </div>
-
-      {loading ? (
-        <p>Chargement...</p>
-      ) : error ? (
-        <p>Erreur : {error.message}</p>
-      ) : ads.length === 0 ? (
-        <p>Aucune annonce trouvée.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {ads.map((ad) => (
-            <AdCard key={ad.id} ad={ad} />
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   );
 }

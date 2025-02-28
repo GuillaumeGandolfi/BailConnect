@@ -1,3 +1,66 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --blue-deep: #002b5b;
+  --blue-bright: #1e90ff;
+  --grey-light: #f0f2f5;
+  --orange-coral: #ff6347;
+  --green-mint: #2ecc71;
+}
+
+.bg-blue-deep {
+  background-color: var(--blue-deep);
+}
+
+.bg-blue-bright {
+  background-color: var(--blue-bright);
+}
+
+.bg-grey-light {
+  background-color: var(--grey-light);
+}
+
+.bg-orange-coral {
+  background-color: var(--orange-coral);
+}
+
+.bg-green-mint {
+  background-color: var(--green-mint);
+}
+
+.text-blue-deep {
+  color: var(--blue-deep);
+}
+
+.text-blue-bright {
+  color: var(--blue-bright);
+}
+
+.text-grey-light {
+  color: var(--grey-light);
+}
+
+.text-orange-coral {
+  color: var(--orange-coral);
+}
+
+.text-green-mint {
+  color: var(--green-mint);
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.nav-link,
+.header-title {
+  font-family: "Montserrat", sans-serif;
+}
