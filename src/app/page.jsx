@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Head from "next/head";
-import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
 import ProcessSection from "../components/ProcessSection";
 import CtaSection from "../components/CTASection";
@@ -16,8 +15,6 @@ export default function HomePage() {
           rel="stylesheet"
         />
       </Head>
-
-      <Header />
 
       <HeroSection />
       <ProcessSection />
