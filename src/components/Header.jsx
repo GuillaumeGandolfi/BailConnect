@@ -3,28 +3,10 @@ import AuthButtons from "./AuthButtons";
 
 export default function Header() {
   return (
-    <header
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "1rem 2rem",
-        backgroundColor: "#f8f8f8",
-      }}
-    >
-      <div>
-        <Link
-          href="/"
-          style={{
-            fontSize: "1.5rem",
-            fontWeight: "bold",
-            color: "#333",
-            textDecoration: "none",
-          }}
-        >
-          Cession Bail
-        </Link>
-      </div>
+    <header className="bg-grey-light py-4 px-8 flex items-center justify-between shadow-sm">
+      <Link href="/" className="text-blue-deep text-2xl font-bold">
+        Cession Bail
+      </Link>
       <nav>
         <AuthButtons />
       </nav>

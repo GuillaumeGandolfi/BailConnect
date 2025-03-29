@@ -5,10 +5,11 @@ import Header from "../components/Header";
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Providers>
           <Header />
-          {children}
+          {/* Zone principale qui grandit pour occuper l'espace disponible */}
+          <main className="flex-grow">{children}</main>
         </Providers>
       </body>
     </html>
